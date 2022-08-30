@@ -59,18 +59,7 @@ const web3Modal = new Web3Modal({
   providerOptions // required
 });
 
-// const networks = {
-//   celo: {
-//     chainId: `0x${Number(42220).toString(16)}`,
-//     chainName: "Celo Mainnet",
-//     nativeCurrency: {
-//       name: "CELO",
-//       symbol: "CELO",
-//       decimals: 18
-//     },
-//     rpcUrls: ["https://forno.celo.org"],
-//     blockExplorerUrls: ["https://explorer.celo.org"]
-//   }
+
 const networks = {
   celo: {
     chainId: `0x${Number(56).toString(16)}`,
@@ -146,7 +135,7 @@ const Minter = () => {
   }
 
   const changeNetwork = async (library, chainId) => {
-    if (chainId !== 42220) {
+    if (chainId !== 56) {
       await library.provider.request({
         method: "wallet_addEthereumChain",
         params: [
