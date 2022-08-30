@@ -6,11 +6,11 @@ import { useTranslation } from "react-i18next";
 
 const styles = {
    container: `py-[70px] space-y-4  flex flex-col justify-center bg-[#eefcf7]`,
-   header: `font-[Kollektif] text-[45px] text-center px-[20px] leading-[50px]`,
+   header: `font-[Kollektif] text-[35px] text-center px-[20px] leading-[50px]`,
    cardcontainer: `py-[25px] mx-auto md:max-w-[1800px] md:flex flex-row flex-wrap   max-w-screen justify-center `,
    green: `text-[#5BBAEB]`,
    fotocontainer: `flex flex-col md:flex-row max-w-[1000px] mx-auto align-middle items-center`,
-   foto: `my-[20px]`,
+   foto: `my-[20px] md:min-w-[400px]`,
    desc: ` p-[20px] align-middle font-[Kollektif] text-[25px] text-[gray] `,
 }
 

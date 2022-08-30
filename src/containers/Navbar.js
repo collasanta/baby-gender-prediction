@@ -8,7 +8,7 @@ const styles = {
    wrapper: `z-[1] shadow-sm fixed  px-8 h-[80px]  w-screen flex justify-between items-center bg-[#ffffd9] text-black overflow:hidden`,
    logo: `flex w-1/8 items-center justify-start font-['Kollektif'] text-[2rem] text-[#78818e]  `,
    textnavbar: `flex w-1/8 items-center justify-start font-['Kollektif'] text-[1.7rem] text-[#78818e]  `,
-   logospan: `text-[#6e45c7]`,
+   logospan: `text-[#6e45c7] ` ,
    menu: `hidden md:flex block `,
    menuitem: `px-4 py-2 m-1 flex items-center text-lg font-['Kollektif'] text-[1.4rem] cursor-pointer rounded-3xl hover:text-[#64b6ac] text-[#78818e]`,
    sidebaritems: `fixed text-center w-full h-full right-0 top-0  text-[2rem] bg-[#ffffff] font-['Kollektif'] text-[#78818e]`,
@@ -32,10 +32,10 @@ const Navbar = () => {
         </a>
       </div>
       <div className={styles.textnavbar} >
-        QUAL É O SEXO?
+        Qual é o Sexo?
       </div>
       <ul className={styles.menu}>
-        {["SOBRE", 'PAIS'].map((item)=> (
+        {["Sobre", 'Papais'].map((item)=> (
         <li className={styles.menuitem} key={`link-${item}`}>
           <div />
           <a href={`#${item}`}>{item}</a>

@@ -12,13 +12,16 @@ import { BoyGirl } from './';
 
 
 const styles = {
+  text: "text-[26px]",
+  textboy: "text-[30px] text-[#90d9e3]",
+  textgirl: "text-[30px] text-[#e390b0]",
   bgrecy:"w-full h-full object-cover ",
   bg: `bg-[#eefcf7] z-201 relative  rounded-full shadow-l mx-auto max-w-[500px] min-w-[375px] shadow-lg px-[10px] pt-[20px] pb-[10px] flex justify-center`,
   bgboy: `bg-[#ebf6ff] z-201 relative  rounded-full shadow-l mx-auto max-w-[500px] min-w-[375px] shadow-lg px-[10px] pt-[20px] pb-[10px] flex justify-center`,
   bggirl: `bg-[#fcf0ee] z-201 relative  rounded-full shadow-l mx-auto max-w-[500px] min-w-[375px] shadow-lg px-[10px] pt-[20px] pb-[10px] flex justify-center`,
   center:`flex justify-center justify-self-center place-content-center place-self-center`,
   imgrecy:'w-[1520px] h-[1520px]  z-1 object-cover opacity-10 absolute  sm:-top-[400px] -top-[350px]',
-  about1: `font-[Kollektif]  text-[30px] text-center md:text-[40px] pt-[100px] pb-[20px]`,
+  about1: `font-[Kollektif]  text-[30px] text-[#64b6a6] text-center md:text-[40px] pt-[100px] pb-[20px]`,
   green: `font-[Kollektif]  text-[#013a81]`,
   grey: `font-[Kollektif] `,
   geral:'',
@@ -44,34 +47,46 @@ const providerOptions = {
     package: WalletConnectProvider, // required
     options: {
       rpc: {
-        42220: "https://rpc.ankr.com/celo",
+        56: "https://bsc-dataseed1.binance.org",
       },
     }
   }
 };
 
 const web3Modal = new Web3Modal({
-  network: "celo", // optional
+  network: "binance", // optional
   // cacheProvider: true, // optional
   providerOptions // required
 });
 
+// const networks = {
+//   celo: {
+//     chainId: `0x${Number(42220).toString(16)}`,
+//     chainName: "Celo Mainnet",
+//     nativeCurrency: {
+//       name: "CELO",
+//       symbol: "CELO",
+//       decimals: 18
+//     },
+//     rpcUrls: ["https://forno.celo.org"],
+//     blockExplorerUrls: ["https://explorer.celo.org"]
+//   }
 const networks = {
   celo: {
-    chainId: `0x${Number(42220).toString(16)}`,
-    chainName: "Celo Mainnet",
+    chainId: `0x${Number(56).toString(16)}`,
+    chainName: "Binance Smart Chain Mainnet",
     nativeCurrency: {
-      name: "CELO",
-      symbol: "CELO",
+      name: "Smart Chain",
+      symbol: "BNB",
       decimals: 18
     },
-    rpcUrls: ["https://forno.celo.org"],
-    blockExplorerUrls: ["https://explorer.celo.org"]
+    rpcUrls: ["https://bsc-dataseed1.binance.org"],
+    blockExplorerUrls: ["https://bscscan.com"]
   }
 }
 
 const address = "0x6FF99dD8E23BbfB9340Aa6eE8878917229505537"
-const rpcurlprovider = new ethers.providers.JsonRpcProvider("https://rpc.ankr.com/celo")
+const rpcurlprovider = new ethers.providers.JsonRpcProvider("https://bsc-dataseed1.binance.org")
 const contract = new ethers.Contract(address, abi, rpcurlprovider)
 
 const Minter = () => {
@@ -86,28 +101,31 @@ const Minter = () => {
   const [message, setMessage] = useState("");
   const [signedMessage, setSignedMessage] = useState("");
   const [verified, setVerified] = useState();
-  const [buyAmount, setBuyAmount] = useState(1)
+  const [buyAmount, setBuyAmount] = useState(0.03)
   const [walletconnected, setWalletconnected] = useState(false)
   const [mintingmodal, setmintingmodal] = useState(false)
-  const [dataloaded, setDataloaded] = useState(false)
+  const [dataloaded, setDataloaded] = useState(true)
   const [tokensperCelo, setTokenspercelo] = useState()
   const [celoPerTokens, setceloPerTokens] = useState()
-  const [gender, setGender] = useState("Clique e Escolha")
+  const [gender, setGender] = useState("Clique no bebê para apostar")
+  const [bnbprice, setbnbprice] = useState()
   const { t } = useTranslation();
 
   useEffect(() => {
-    const rpcurlprovider = new ethers.providers.JsonRpcProvider("https://rpc.ankr.com/celo")
-    const contract = new ethers.Contract(address, abi, rpcurlprovider)
-    async function loaddata() {
-      const tokenspercello = await contract.TokensperCelo()
-      setTokenspercelo(ethers.utils.formatEther(tokenspercello.toString()))
-      const celopertokenss = await contract.PricecRecy()
-      setceloPerTokens(ethers.utils.formatEther(celopertokenss.toString()))
-      setDataloaded(true)
-    }
-    loaddata()
+    // const rpcurlprovider = new ethers.providers.JsonRpcProvider("https://bsc-dataseed1.binance.org")
+    // const contract = new ethers.Contract(address, abi, rpcurlprovider)
+    
+    console.log("price BNB", priceBNB())
   }, [])
   
+  
+  async function priceBNB() {
+    axios.get('https://www.binance.com/api/v3/ticker/price?symbol=BNBBRL').then(resp => {
+      setbnbprice(resp.data.price)
+      console.log(resp.data.price);
+  });
+  }
+
   async function gasPriceEth() {
     try {
       const { data: { result: gasPrice } } = await axios.post('https://eth-mainnet.alchemyapi.io/v2/cLBYf3MjB7MAcWCsT_6OFc19nnoTEZMx', {
@@ -185,7 +203,7 @@ const Minter = () => {
         let library = new ethers.providers.Web3Provider(provider);
         let network = await library.getNetwork();
         let chainId = network.chainId
-        if (chainId !== 42220) {
+        if (chainId !== 56) {
           setWalletconnected(false)
           } else { setWalletconnected(true) }
       };
@@ -213,7 +231,7 @@ const Minter = () => {
 
 
   useEffect(() => {
-    if (chainId !== 42220) {
+    if (chainId !== 56) {
       setWalletconnected(false)
       } else { setWalletconnected(true) }
   }, [chainId])
@@ -224,7 +242,7 @@ const Minter = () => {
     let library = new ethers.providers.Web3Provider(provider);
     let network = await library.getNetwork();
     let chainId = network.chainId
-    if (chainId !== 42220) {
+    if (chainId !== 56) {
       setWalletconnected(false)
       changeNetwork(library, chainId)
       } else { setWalletconnected(true) }
@@ -253,12 +271,29 @@ const Minter = () => {
     setBuyAmount(event.target.value)
   }
 
-  function renderElement() {
+  function renderElement(object) {
     if (gender === "APOSTO que é ELA") {
-      return styles.bggirl
+      if (object === "betContainer") {
+        return styles.bggirl
+      }
+      if (object === "text") {
+        return styles.textgirl
+      }
     } else if (gender === "APOSTO que é ELE") {
-      return styles.bgboy
-    } else { return styles.bg}
+      if (object === "betContainer") {
+        return styles.bgboy
+      }
+      if (object === "text") {
+        return styles.textboy
+      }
+    } else {
+      if (object === "betContainer") {
+        return styles.bg
+      }
+      if (object === "text") {
+        return styles.text
+      }
+      }
   }
   return (
     <>
@@ -266,7 +301,7 @@ const Minter = () => {
       <div className={styles.bgrecy}  >
 
       <div className={styles.about1} >
-            <span className={styles.green}>{gender}</span>
+            <span className={renderElement("text")}>{gender}</span>
         </div>
 
       <BoyGirl 
@@ -274,7 +309,7 @@ const Minter = () => {
       gender= {gender}
        />        
 
-        <div className={ renderElement()}>
+        <div className={ renderElement("betContainer")}>
 
 
           
@@ -302,7 +337,7 @@ const Minter = () => {
                       NOME:
                     </div>
                     <div className={styles.inputbox}>
-                      <input placeholder='NOME DO BÊBE' type="number" className={styles.inputfield} onChange={handleInputChange}></input>
+                      <input placeholder='NOME DO BÊBE' type="text" className={styles.inputfield} onChange={handleInputChange}></input>
                     </div>
                   </div>
                   :
@@ -315,7 +350,7 @@ const Minter = () => {
                       VALOR:
                     </div>
                     <div className={styles.outputbox}>
-                    <input placeholder='EM TOKENS BNB' type="number" className={styles.inputfield} onChange={handleInputChange}></input>
+                    <input placeholder='EM BNB' type="number" className={styles.inputfield} onChange={handleInputChange}></input>
                     </div>
                   </div>
                   :
@@ -339,8 +374,8 @@ const Minter = () => {
 
             {dataloaded ?
               <div className={styles.price}>
-                <span className={styles.asupply}>1.0</span> BNB = &nbsp;
-                R$ <span className={styles.asupply}>{celoPerTokens}</span> 
+                <span className={styles.asupply}>{buyAmount}</span> BNB = &nbsp;
+                R$ <span className={styles.asupply}>{(buyAmount * parseFloat(bnbprice)).toFixed(2)}</span> 
               </div>
               :
               ""

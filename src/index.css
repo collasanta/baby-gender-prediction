@@ -9,9 +9,20 @@
    font-weight: bold;
    }
 
+   @font-face {
+      font-family: "BabyAngel";
+      src: local("BabyAngel"),
+       url("./assets/BabyAngel.otf") format("opentype");
+      font-weight: bold;
+      }
+
    * {
       box-sizing: border-box;
       padding: 0;
       margin: 0;
       scroll-behavior: smooth;
     }
+    
+
+
+    
