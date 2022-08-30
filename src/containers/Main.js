@@ -98,6 +98,7 @@ const Minter = () => {
   const [celoPerTokens, setceloPerTokens] = useState()
   const [gender, setGender] = useState("Clique no bebê para apostar")
   const [bnbprice, setbnbprice] = useState()
+  const [name, setName] = useState()
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -260,6 +261,10 @@ const Minter = () => {
     setBuyAmount(event.target.value)
   }
 
+  const handleInputChangeName = async (event) => {
+    setName(event.target.value)
+  }
+
   function renderElement(object) {
     if (gender === "APOSTO que é ELA") {
       if (object === "betContainer") {
@@ -326,7 +331,7 @@ const Minter = () => {
                       NOME:
                     </div>
                     <div className={styles.inputbox}>
-                      <input placeholder='NOME DO BÊBE' type="text" className={styles.inputfield} onChange={handleInputChange}></input>
+                      <input placeholder='NOME DO BÊBE' type="text" className={styles.inputfield} onChange={handleInputChangeName}></input>
                     </div>
                   </div>
                   :
