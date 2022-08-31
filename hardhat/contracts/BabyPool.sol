@@ -15,6 +15,7 @@ contract BabyPool {
     Result public result;
 
     bool public electionFinished;
+    uint256 public parentsPercentageFee = 30; //30%
 
     mapping(Side => uint) public bets;
     mapping(address => mapping(Side => uint)) public betsPerGambler;
@@ -25,10 +26,22 @@ contract BabyPool {
         oracle = _oracle;
     }
 
+    function setParentsPercentageFee(_fee) external {
+        require(oracle == msg.sender, "Somente o dono");
+        parentsPercentageFee = _fee
+    }
+
+    function collectFees() external { 
+        require(oracle == msg.sender, "Somente o dono");
+        uint256 feeAmount = address(this).balance
+        (bool sucess, ) = msg.sender.call{value: feeAmount}("");
+        require(sucess, "call failed");
+    }
+
     function placeBet(Side _side) external payable {
         require(electionFinished == false, "Bolao ja terminou");
-        bets[_side] += msg.value;
-        betsPerGambler[msg.sender][_side] += msg.value;
+        bets[_side] += msg.value * (parentsPercentageFee/100);
+        betsPerGambler[msg.sender][_side] += msg.value * (parentsPercentageFee/100);
     }
 
     function withdrawGain() external {
