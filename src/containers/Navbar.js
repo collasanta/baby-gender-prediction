@@ -27,9 +27,7 @@ const Navbar = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.logo}>
-        <a href='https://detrashtoken.com'>
           <img className={styles.baby} src={images.baby} alt=''/>
-        </a>
       </div>
       <div className={styles.textnavbar} >
         Qual é o Sexo?
