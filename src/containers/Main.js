@@ -17,7 +17,7 @@ const styles = {
   textgirl: "text-[30px] text-[#e390b0]",
   bgrecy:"w-full h-full object-cover ",
   bg: `bg-[#eefcf7] z-201 relative  rounded-full shadow-l mx-auto max-w-[500px] min-w-[375px] shadow-lg px-[10px] pt-[20px] pb-[10px] flex justify-center`,
-  bgboy: `bg-[#ebf6ff] z-201 relative  rounded-full shadow-l mx-auto max-w-[500px] min-w-[375px] shadow-lg px-[10px] pt-[20px] pb-[10px] flex justify-center`,
+  bgboy: `bg-[#d1effc] z-201 relative  rounded-full shadow-l mx-auto max-w-[500px] min-w-[375px] shadow-lg px-[10px] pt-[20px] pb-[10px] flex justify-center`,
   bggirl: `bg-[#fcf0ee] z-201 relative  rounded-full shadow-l mx-auto max-w-[500px] min-w-[375px] shadow-lg px-[10px] pt-[20px] pb-[10px] flex justify-center`,
   center:`flex justify-center justify-self-center place-content-center place-self-center`,
   imgrecy:'w-[1520px] h-[1520px]  z-1 object-cover opacity-10 absolute  sm:-top-[400px] -top-[350px]',
@@ -35,6 +35,7 @@ const styles = {
   inputdesc: `text-[grey]`,
   btnconnect: `font-[Kollektif] animate-pulse text-lg rounded-full bg-[#64b6a6] hover:bg-[#5BBAEB] text-white font-bold p-4 px-[60px]  shadow-md`,
   btnmint: `animate-pulse font-[Kollektif] text-[1.7rem] bg-[#64B6AC] hover:bg-[#5BBAEB] text-white rounded-full mx-7 font-bold py-4  shadow-md`,
+  btnlocked: `font-[Kollektif] text-[1.7rem] bg-[grey] text-white rounded-full mx-7 font-bold py-4  shadow-md`,
   asupply: ` text-[22px] text-center text-[#45c76e]`,
   polygon: `max-w-[200px] mx-auto`,
   modal: `mx-auto`,
@@ -368,8 +369,14 @@ const Minter = () => {
                   ""
                 }
 
-                {walletconnected ?
+                {walletconnected && gender != "Clique no bebê para apostar" ?
                   <button className={styles.btnmint} onClick={() => { buy() }}>APOSTAR</button>
+                  :
+                  ""
+                }
+
+               {walletconnected && gender === "Clique no bebê para apostar" ?
+                  <button className={styles.btnlocked} >ESCOLHA O SEXO</button>
                   :
                   ""
                 }
@@ -379,7 +386,7 @@ const Minter = () => {
 
               <div className={styles.modal}>
                 <div className={styles.spinner}> </div>
-                <span className={styles.price}>{t("TRANSACAO EM PROCESSO")}...</span>
+                <span className={styles.price}>"TRANSACAO EM PROCESSO"...</span>
               </div>
             }
 
