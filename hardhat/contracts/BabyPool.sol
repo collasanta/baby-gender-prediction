@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.7;
 
 contract BabyPool {
     enum Side {
@@ -16,7 +16,7 @@ contract BabyPool {
 
     bool public electionFinished;
     uint256 public parentsPercentageFee = 30; //30%
-    uint256 internal totalFeesCollected
+    uint256 public totalFeesCollected;
 
     mapping(Side => uint) public bets;
     mapping(address => mapping(Side => uint)) public betsPerGambler;
@@ -28,9 +28,9 @@ contract BabyPool {
         oracle = _oracle;
     }
 
-    function setParentsPercentageFee(_fee) external {
+    function setParentsPercentageFee(uint256 _fee) external {
         require(oracle == msg.sender, "Somente o dono");
-        parentsPercentageFee = _fee
+        parentsPercentageFee = _fee;
     }
 
     function collectFees() external { 
@@ -41,16 +41,16 @@ contract BabyPool {
 
     function withdrawAllContractBalance() external { 
         require(oracle == msg.sender, "Somente o dono");
-        uint256 feeAmount = address(this).balance
-        (bool sucess, ) = msg.sender.call{value: feeAmount}("");
+        uint256 contractBalance = address(this).balance;
+        (bool sucess, ) = msg.sender.call{value: contractBalance}("");
         require(sucess, "call failed");
     }
 
     function placeBet(Side _side) external payable {
         require(electionFinished == false, "Bolao ja terminou");
-        totalFeesCollected = totalFeesCollected + (msg.value * ((parentsPercentageFee)/100))
-        bets[_side] += msg.value * ((100 - parentsPercentageFee)/100);
-        betsPerGambler[msg.sender][_side] += msg.value * ((100 - parentsPercentageFee)/100);
+        totalFeesCollected = (totalFeesCollected + (msg.value * parentsPercentageFee)/100);
+        bets[_side] += msg.value;
+        betsPerGambler[msg.sender][_side] += msg.value;
     }
 
     function withdrawGain() external {
@@ -60,10 +60,11 @@ contract BabyPool {
         uint gain = gamblerBet +
             (bets[result.loser] * gamblerBet) /
             bets[result.winner];
+        uint gainMinusFee = (gain * (100 - parentsPercentageFee))/100;
         betsPerGambler[msg.sender][Side.Menino] = 0;
         betsPerGambler[msg.sender][Side.Menina] = 0;
         // payable(msg.sender).transfer(gain);
-        (bool sucess, ) = msg.sender.call{value: gain}("");
+        (bool sucess, ) = msg.sender.call{value: gainMinusFee}("");
         require(sucess, "call failed");
     }
 

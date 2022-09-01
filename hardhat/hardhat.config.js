@@ -4,22 +4,25 @@ require('dotenv').config()
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
-  solidity: "0.8.9",
+  solidity: "0.8.7",
   networks: {
-    testnet: {
-      url: process.env.BSC_TESTNET_RPC_PROVIDER,
-      chainId: 97,
-      accounts: process.env.PRIVATE_KEY,
-    },
-    mainnet: {
-      url: process.env.BSC_MAINNET_RPC_PROVIDER,
-      chainId: 56,
-      accounts: process.env.PRIVATE_KEY,
-    },
+    // bsctestnet: {
+    //   url: process.env.BSC_TESTNET_RPC_PROVIDER,
+    //   chainId: 97,
+    //       accounts:
+    //       process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : []
+    // },
+    // bscmainnet: {
+    //   url: process.env.BSC_MAINNET_RPC_PROVIDER,
+    //   chainId: 56,
+    //       accounts:
+    //       process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : []
+    // },
     mumbai: {
       url: process.env.POLYGON_MUMBAI_RPC_PROVIDER,
-      accounts: process.env.PRIVATE_KEY 
-    }
+      accounts:
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : []
+    },
   },
   etherscan: {
     apiKey: {

@@ -8,7 +8,7 @@ const hre = require("hardhat");
 
 async function main() {
   const BabyPool = await ethers.getContractFactory("BabyPool");
-  const oracle = owner.address
+  const oracle = "0xA7dF4B367076f27fA8a286387fc0521dC77B1406" //batataTesting
   const babyPool = await BabyPool.deploy(oracle);
   await babyPool.deployed()
 
