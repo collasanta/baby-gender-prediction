@@ -3,7 +3,7 @@ import { images } from '../assets';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { ethers } from 'ethers'
-import abi from '../assets/VENDOR.json'
+import abi from '../assets/BabyPool.json'
 import axios from "axios";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3Modal from "web3modal";
@@ -42,26 +42,41 @@ const styles = {
   price: ` text-center mx-6 font-[Kollektif] text-[18px] pt-[15px] pb-[15px] text-[#7d818c]`,
 }
 
+const chainID = 80001 // MUMBAI -> TROCAR QUANDO FOR PRA MAINNET
+// const chainID = 56 // BINANCE SMART CHAIN
+
 const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider, // required
     options: {
       rpc: {
         56: "https://bsc-dataseed1.binance.org",
+        80001: "https://matic-mumbai.chainstacklabs.com",
       },
     }
   }
 };
 
 const web3Modal = new Web3Modal({
-  network: "binance", // optional
-  // cacheProvider: true, // optional
-  providerOptions // required
+  network: "mumbai",
+  // network: "binance", // TROCAR quando for pra mainnet
+  providerOptions 
 });
 
 
 const networks = {
-  celo: {
+  mumbai: {
+    chainId: `0x${Number(80001).toString(16)}`,
+    chainName: "Mumbai",
+    nativeCurrency: {
+      name: "Mumbai",
+      symbol: "MATIC",
+      decimals: 18
+    },
+    rpcUrls: ["https://matic-mumbai.chainstacklabs.com"],
+    blockExplorerUrls: ["https://mumbai.polygonscan.com"]
+  },
+  binance: {
     chainId: `0x${Number(56).toString(16)}`,
     chainName: "Binance Smart Chain Mainnet",
     nativeCurrency: {
@@ -74,9 +89,10 @@ const networks = {
   }
 }
 
-const address = "0x6FF99dD8E23BbfB9340Aa6eE8878917229505537"
-const rpcurlprovider = new ethers.providers.JsonRpcProvider("https://bsc-dataseed1.binance.org")
-const contract = new ethers.Contract(address, abi, rpcurlprovider)
+const contractAddress = "0x07042fBF91904736Ef32Fe518fDAb9343FB946fe" // ADDRESS MUMBAI -> trocar pro address da BINANCE SMART CHAIN 
+// const rpcurlprovider = new ethers.providers.JsonRpcProvider("https://bsc-dataseed1.binance.org") // RPC URL BINANCE SMART CHAIN
+const rpcurlprovider = new ethers.providers.JsonRpcProvider("https://polygon-mumbai.g.alchemy.com/v2/pkqdvzeiqirYql1sNmUAA3IIe0AL9_0U")
+const contract = new ethers.Contract(contractAddress, abi.abi, rpcurlprovider)
 
 const Minter = () => {
   const [provider, setProvider] = useState();
@@ -94,8 +110,6 @@ const Minter = () => {
   const [walletconnected, setWalletconnected] = useState(false)
   const [mintingmodal, setmintingmodal] = useState(false)
   const [dataloaded, setDataloaded] = useState(true)
-  const [tokensperCelo, setTokenspercelo] = useState()
-  const [celoPerTokens, setceloPerTokens] = useState()
   const [gender, setGender] = useState("Clique no bebê para apostar")
   const [bnbprice, setbnbprice] = useState()
   const [name, setName] = useState()
@@ -136,12 +150,13 @@ const Minter = () => {
   }
 
   const changeNetwork = async (library, chainId) => {
-    if (chainId !== 56) {
+    if (chainId !== chainID) {
       await library.provider.request({
         method: "wallet_addEthereumChain",
         params: [
           {
-            ...networks.celo
+            ...networks.mumbai //TROCAR PRA .binance QUANDO FOR PRA MAINNET
+            // ...networks.binance 
           }
         ]
       }) 
@@ -193,7 +208,7 @@ const Minter = () => {
         let library = new ethers.providers.Web3Provider(provider);
         let network = await library.getNetwork();
         let chainId = network.chainId
-        if (chainId !== 56) {
+        if (chainId !== chainID) {
           setWalletconnected(false)
           } else { setWalletconnected(true) }
       };
@@ -221,7 +236,7 @@ const Minter = () => {
 
 
   useEffect(() => {
-    if (chainId !== 56) {
+    if (chainId !== chainID) {
       setWalletconnected(false)
       } else { setWalletconnected(true) }
   }, [chainId])
@@ -232,7 +247,7 @@ const Minter = () => {
     let library = new ethers.providers.Web3Provider(provider);
     let network = await library.getNetwork();
     let chainId = network.chainId
-    if (chainId !== 56) {
+    if (chainId !== chainID) {
       setWalletconnected(false)
       changeNetwork(library, chainId)
       } else { setWalletconnected(true) }
@@ -246,9 +261,11 @@ const Minter = () => {
       const signer = await library.getSigner()
       const signedcontract = await contract.connect(signer)
       const gasPrice = await gasPriceEth();
-      const buytx = await signedcontract.BuyTokens({
+      const buytx = await signedcontract.placeBet(
+        gender === "APOSTO que é ELE" ? 0 : 1
+        ,{
         value: ethers.utils.parseEther(buyAmount),
-        gasLimit: '120000',
+        gasLimit: '150000',
         gasPrice: gasPrice
       });
       setmintingmodal(true)
