@@ -35,7 +35,7 @@ const styles = {
   inputdesc: `text-[grey]`,
   btnconnect: `font-[Kollektif] animate-pulse text-lg rounded-full bg-[#64b6a6] hover:bg-[#5BBAEB] text-white font-bold p-4 px-[60px]  shadow-md`,
   btnmint: `animate-pulse font-[Kollektif] text-[1.7rem] bg-[#64B6AC] hover:bg-[#5BBAEB] text-white rounded-full mx-7 font-bold py-4  shadow-md`,
-  btnlocked: `font-[Kollektif] text-[1.7rem] bg-[grey] text-white rounded-full mx-7 font-bold py-4  shadow-md`,
+  btnlocked: `font-[Kollektif] text-[1.2rem] px-[10px] bg-[#c0bebd] text-white rounded-full mx-7 font-bold py-4  shadow-md`,
   asupply: ` text-[22px] text-center text-[#45c76e]`,
   polygon: `max-w-[200px] mx-auto`,
   modal: `mx-auto`,
@@ -376,7 +376,7 @@ const Minter = () => {
                 }
 
                {walletconnected && gender === "Clique no bebê para apostar" ?
-                  <button className={styles.btnlocked} >ESCOLHA O SEXO</button>
+                  <button className={styles.btnlocked} >ESCOLHA O SEXO CLICANDO NO BEBÊ ACIMA</button>
                   :
                   ""
                 }
