@@ -17,7 +17,7 @@ const Footer = () => {
       </div>
       <div className={styles.c2}>
         Está com dúvidas? <br />
-        <span className="text-[grey]">Entre em contato:<br /> <a href='https://chat.whatsapp.com/I11usJN0mHB9XUyUUVCBIj'>Chama no ZAP</a></span>
+        <span className="text-[grey]"><br /> <a href='https://chat.whatsapp.com/I11usJN0mHB9XUyUUVCBIj'>Chama no ZAP</a></span>
       </div>
     </>
 
