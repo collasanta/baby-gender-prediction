@@ -52,7 +52,7 @@ const providerOptions = {
     options: {
       rpc: {
         56: "https://bsc-dataseed1.binance.org",
-        80001: "https://matic-mumbai.chainstacklabs.com",
+        // 80001: "https://matic-mumbai.chainstacklabs.com",
       },
     }
   }
@@ -156,7 +156,7 @@ const Minter = () => {
         method: "wallet_addEthereumChain",
         params: [
           {
-            ...networks.mumbai //TROCAR PRA .binance QUANDO FOR PRA MAINNET
+            ...networks.binance //TROCAR PRA .binance QUANDO FOR PRA MAINNET
             // ...networks.binance 
           }
         ]
