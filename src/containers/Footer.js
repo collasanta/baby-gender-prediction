@@ -11,13 +11,13 @@ const Footer = () => {
   return (
     <>
       <div className={styles.container}>
-        <a href='https://detrashtoken.com'>
+        <a href='https://www.bolaorevelacao.com.br/'>
           <img src={images.bolao} className={styles.img} alt=''></img>
         </a>
       </div>
       <div className={styles.c2}>
-        Está com dúvidas? <br/> 
-        <span className="text-[grey]">Entre em contato:<br/> <a href='https://detrashtoken.com'>(85) 9 9987-6891</a></span>
+        Está com dúvidas? <br />
+        <span className="text-[grey]">Entre em contato:<br /> <a href='https://chat.whatsapp.com/I11usJN0mHB9XUyUUVCBIj'>Chama no ZAP</a></span>
       </div>
     </>
 
