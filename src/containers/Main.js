@@ -15,16 +15,16 @@ const styles = {
   text: "text-[26px]",
   textboy: "text-[30px] text-[#90d9e3]",
   textgirl: "text-[30px] text-[#e390b0]",
-  bgrecy:"w-full h-full object-cover ",
+  bgrecy: "w-full h-full object-cover ",
   bg: `bg-[#eefcf7] z-201 relative  rounded-full shadow-l mx-auto max-w-[500px] min-w-[375px] shadow-lg px-[10px] pt-[20px] pb-[10px] flex justify-center`,
   bgboy: `bg-[#d1effc] z-201 relative  rounded-full shadow-l mx-auto max-w-[500px] min-w-[375px] shadow-lg px-[10px] pt-[20px] pb-[10px] flex justify-center`,
   bggirl: `bg-[#fcf0ee] z-201 relative  rounded-full shadow-l mx-auto max-w-[500px] min-w-[375px] shadow-lg px-[10px] pt-[20px] pb-[10px] flex justify-center`,
-  center:`flex justify-center justify-self-center place-content-center place-self-center`,
-  imgrecy:'w-[1520px] h-[1520px]  z-1 object-cover opacity-10 absolute  sm:-top-[400px] -top-[350px]',
+  center: `flex justify-center justify-self-center place-content-center place-self-center`,
+  imgrecy: 'w-[1520px] h-[1520px]  z-1 object-cover opacity-10 absolute  sm:-top-[400px] -top-[350px]',
   about1: `font-[Kollektif]  text-[30px] text-[#64b6a6] text-center md:text-[40px] pt-[100px] pb-[20px]`,
   green: `font-[Kollektif]  text-[#013a81]`,
   grey: `font-[Kollektif] `,
-  geral:'',
+  geral: '',
   container: `flex flex-col w-[360px] md:w-[600px] z-200 relative justify-center`,
   div1: `pb-3`,
   div2: ` mx-auto  w-[360px] text-center flex flex-col space-y-2 `,
@@ -43,8 +43,8 @@ const styles = {
   price: ` text-center mx-6 font-[Kollektif] text-[18px] pt-[15px] pb-[15px] text-[#7d818c]`,
 }
 
-const chainID = 80001 // MUMBAI -> TROCAR QUANDO FOR PRA MAINNET
-// const chainID = 56 // BINANCE SMART CHAIN
+// const chainID = 80001 // MUMBAI -> TROCAR QUANDO FOR PRA MAINNET
+const chainID = 56 // BINANCE SMART CHAIN
 
 const providerOptions = {
   walletconnect: {
@@ -59,9 +59,9 @@ const providerOptions = {
 };
 
 const web3Modal = new Web3Modal({
-  network: "mumbai",
-  // network: "binance", // TROCAR quando for pra mainnet
-  providerOptions 
+  // network: "mumbai",
+  network: "binance", // TROCAR quando for pra mainnet
+  providerOptions
 });
 
 
@@ -90,9 +90,9 @@ const networks = {
   }
 }
 
-const contractAddress = "0x07042fBF91904736Ef32Fe518fDAb9343FB946fe" // ADDRESS MUMBAI -> trocar pro address da BINANCE SMART CHAIN 
-// const rpcurlprovider = new ethers.providers.JsonRpcProvider("https://bsc-dataseed1.binance.org") // RPC URL BINANCE SMART CHAIN
-const rpcurlprovider = new ethers.providers.JsonRpcProvider("https://polygon-mumbai.g.alchemy.com/v2/pkqdvzeiqirYql1sNmUAA3IIe0AL9_0U")
+const contractAddress = "0x4DBe5Cf47C1c7fac6cAFAEe7B6F99786A5D30F21" // ADDRESS MUMBAI -> trocar pro address da BINANCE SMART CHAIN 
+const rpcurlprovider = new ethers.providers.JsonRpcProvider("https://bsc-dataseed1.binance.org") // RPC URL BINANCE SMART CHAIN
+// const rpcurlprovider = new ethers.providers.JsonRpcProvider("https://polygon-mumbai.g.alchemy.com/v2/pkqdvzeiqirYql1sNmUAA3IIe0AL9_0U")
 const contract = new ethers.Contract(contractAddress, abi.abi, rpcurlprovider)
 
 const Minter = () => {
@@ -119,16 +119,16 @@ const Minter = () => {
   useEffect(() => {
     // const rpcurlprovider = new ethers.providers.JsonRpcProvider("https://bsc-dataseed1.binance.org")
     // const contract = new ethers.Contract(address, abi, rpcurlprovider)
-    
+
     console.log("price BNB", priceBNB())
   }, [])
-  
-  
+
+
   async function priceBNB() {
     axios.get('https://www.binance.com/api/v3/ticker/price?symbol=BNBBRL').then(resp => {
       setbnbprice(resp.data.price)
       console.log(resp.data.price);
-  });
+    });
   }
 
   async function gasPriceEth() {
@@ -160,7 +160,7 @@ const Minter = () => {
             // ...networks.binance 
           }
         ]
-      }) 
+      })
     }
   }
 
@@ -172,7 +172,7 @@ const Minter = () => {
     const accounts = await library.listAccounts();
     let network = await library.getNetwork();
     let chainId = network.chainId
-    
+
     setProvider(provider);
     setLibrary(library);
     setChainId(chainId);
@@ -180,7 +180,7 @@ const Minter = () => {
     console.log("provider before", provider)
     console.log("library before", library)
     if (accounts) setAccount(accounts[0]);
-      
+
 
     await changeNetwork(library, chainId)
 
@@ -204,14 +204,14 @@ const Minter = () => {
           setWalletconnected(false)
         }
       }
-      
+
       const handleChainChanged = async () => {
         let library = new ethers.providers.Web3Provider(provider);
         let network = await library.getNetwork();
         let chainId = network.chainId
         if (chainId !== chainID) {
           setWalletconnected(false)
-          } else { setWalletconnected(true) }
+        } else { setWalletconnected(true) }
       };
 
       const handleDisconnect = async () => {
@@ -239,18 +239,18 @@ const Minter = () => {
   useEffect(() => {
     if (chainId !== chainID) {
       setWalletconnected(false)
-      } else { setWalletconnected(true) }
+    } else { setWalletconnected(true) }
   }, [chainId])
 
   useEffect(() => {
 
     const handleProviderChanged = async () => {
-    let library = new ethers.providers.Web3Provider(provider);
-    let network = await library.getNetwork();
-    let chainId = network.chainId
-    if (chainId !== chainID) {
-      setWalletconnected(false)
-      changeNetwork(library, chainId)
+      let library = new ethers.providers.Web3Provider(provider);
+      let network = await library.getNetwork();
+      let chainId = network.chainId
+      if (chainId !== chainID) {
+        setWalletconnected(false)
+        changeNetwork(library, chainId)
       } else { setWalletconnected(true) }
     }
 
@@ -258,21 +258,21 @@ const Minter = () => {
   }, [provider, library])
 
   async function buy() {
-    
-      const signer = await library.getSigner()
-      const signedcontract = await contract.connect(signer)
-      const gasPrice = await gasPriceEth();
-      const buytx = await signedcontract.placeBet(
-        gender === "APOSTO que é ELE" ? 0 : 1
-        ,{
+
+    const signer = await library.getSigner()
+    const signedcontract = await contract.connect(signer)
+    const gasPrice = await gasPriceEth();
+    const buytx = await signedcontract.placeBet(
+      gender === "APOSTO que é ELE" ? 0 : 1
+      , {
         value: ethers.utils.parseEther(buyAmount),
         gasLimit: '150000',
         gasPrice: gasPrice
       });
-      setmintingmodal(true)
-      await buytx.wait()
-      setmintingmodal(false)
-    
+    setmintingmodal(true)
+    await buytx.wait()
+    setmintingmodal(false)
+
   }
 
   const handleInputChange = async (event) => {
@@ -305,28 +305,28 @@ const Minter = () => {
       if (object === "text") {
         return styles.text
       }
-      }
+    }
   }
   return (
     <>
-      
+
       <div className={styles.bgrecy}  >
 
-      <div className={styles.about1} >
-            <span className={renderElement("text")}>{gender}</span>
+        <div className={styles.about1} >
+          <span className={renderElement("text")}>{gender}</span>
         </div>
 
-      <BoyGirl 
-      setGender={gender => setGender(gender)}
-      gender= {gender}
-       />        
+        <BoyGirl
+          setGender={gender => setGender(gender)}
+          gender={gender}
+        />
 
-        <div className={ renderElement("betContainer")}>
+        <div className={renderElement("betContainer")}>
 
 
-          
 
-          <div className={styles.container }>
+
+          <div className={styles.container}>
             <div className={styles.div1}>
               <img src={images.bolao} alt="" className={styles.polygon}></img>
             </div>
@@ -362,7 +362,7 @@ const Minter = () => {
                       VALOR:
                     </div>
                     <div className={styles.outputbox}>
-                    <input placeholder='EM BNB' type="number" className={styles.inputfield} onChange={handleInputChange}></input>
+                      <input placeholder='EM BNB' type="number" className={styles.inputfield} onChange={handleInputChange}></input>
                     </div>
                   </div>
                   :
@@ -375,7 +375,7 @@ const Minter = () => {
                   ""
                 }
 
-               {walletconnected && gender === "Clique no bebê para apostar" ?
+                {walletconnected && gender === "Clique no bebê para apostar" ?
                   <button className={styles.btnlocked} >ESCOLHA O SEXO CLICANDO NO BEBÊ ACIMA</button>
                   :
                   ""
@@ -393,17 +393,17 @@ const Minter = () => {
             {dataloaded ?
               <div className={styles.price}>
                 <span className={styles.asupply}>{buyAmount}</span> BNB = &nbsp;
-                R$ <span className={styles.asupply}>{(buyAmount * parseFloat(bnbprice)).toFixed(2)}</span> 
+                R$ <span className={styles.asupply}>{(buyAmount * parseFloat(bnbprice)).toFixed(2)}</span>
               </div>
               :
               ""
             }
           </div>
         </div>
-        
+
       </div>
-          
-      
+
+
       {/* //--------------------------------------- */}
     </>
   )
