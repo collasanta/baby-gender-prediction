@@ -107,7 +107,7 @@ const Minter = () => {
   const [message, setMessage] = useState("");
   const [signedMessage, setSignedMessage] = useState("");
   const [verified, setVerified] = useState();
-  const [buyAmount, setBuyAmount] = useState(0.04)
+  const [buyAmount, setBuyAmount] = useState(0.05)
   const [walletconnected, setWalletconnected] = useState(false)
   const [mintingmodal, setmintingmodal] = useState(false)
   const [dataloaded, setDataloaded] = useState(true)
